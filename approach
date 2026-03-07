@@ -1,0 +1,27 @@
+In the repo for containerization
+======================================
+1)I have clone the repo from git   
+2)I will create 3 Docker file for each service 
+
+
+ CI
+
+Git Hub action
+=====================
+1) mention steps required to trigger the pipe line on push feature branch or manually comiting using workflow dispatch
+2) I will use action Docker build scan push action from market place so that I can publish the Docker image to Gcp artifactory
+
+
+Creating the Infra
+=========================
+1) create a project
+2)crete a vpc in us-central-1 region
+3)I wil create a gcp artifact registry
+4)I will create a Kubernetes cluster
+
+CD
+=====================
+1) I will create kubernetes cluster in GCP using Terraform code or manually as required
+2) I will create yaml files for all the applications cosidered as an individual component in a different repo ( Deployment yaml, secret yaml, configmap.yaml,hpa.yaml,vs.yaml)
+3) I will link the repo to argo cd
+4) In Argo CD projects I will mention the souce repo and destination cluster where the app should be deployed

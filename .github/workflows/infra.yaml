@@ -1,0 +1,27 @@
+name: Provision GKE Infra
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: GCP Auth
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: infra/terraform
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: infra/terraform

@@ -1,0 +1,20 @@
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Authenticate
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Get GKE Credentials
+      run: |
+        gcloud container clusters get-credentials private-gke-cluster \
+        --region us-central1
+
+    - name: Deploy to GKE
+      run: |
+        kubectl apply -f k8s/

@@ -1,0 +1,36 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Authenticate to GCP
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Configure Docker
+      run: gcloud auth configure-docker
+
+    - name: Build App Service
+      run: |
+        docker build -t gcr.io/$PROJECT_ID/app-service:latest ./app-service
+        docker push gcr.io/$PROJECT_ID/app-service:latest
+
+    - name: Build Patient Service
+      run: |
+        docker build -t gcr.io/$PROJECT_ID/patient-service:latest ./patient-service
+        docker push gcr.io/$PROJECT_ID/patient-service:latest
+
+    - name: Build Order Service
+      run: |
+        docker build -t gcr.io/$PROJECT_ID/order-service:latest ./order-service
+        docker push gcr.io/$PROJECT_ID/order-service:latest

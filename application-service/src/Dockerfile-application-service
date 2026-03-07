@@ -1,9 +1,0 @@
-FROM node:20.19.5-trixie
-
-WORKDIR /app
-
-COPY . .
-
-RUN npm install
-
-CMD [ "node" "/app/index.js"]
