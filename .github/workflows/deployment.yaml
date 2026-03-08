@@ -1,20 +1,27 @@
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+  name: "Deploy to gke" 
+  on:
+    workflow_run:
+      workflows: ["Build and Push Image"] # Name of the first workflow
+      types:
+        - completed
+  jobs:
+    deploy:
+      needs: build
+      runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v3
+      steps:
+      - uses: actions/checkout@v3
 
-    - name: Authenticate
-      uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Authenticate
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Get GKE Credentials
-      run: |
-        gcloud container clusters get-credentials private-gke-cluster \
-        --region us-central1
+      - name: Get GKE Credentials
+        run: |
+          gcloud container clusters get-credentials private-gke-cluster \
+          --region us-central1
 
-    - name: Deploy to GKE
-      run: |
-        kubectl apply -f k8s/
+      - name: Deploy to GKE
+        run: |
+          kubectl apply -f k8s/
