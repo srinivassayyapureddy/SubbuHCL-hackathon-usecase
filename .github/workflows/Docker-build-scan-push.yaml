@@ -41,7 +41,7 @@ jobs:
          uses: docker/build-push-action@v6
          with:
           push: true
-          tags: purna1234/hcl-demo:order-service
+          tags: srinivassayyapureddy/hcl-demo:order-service
           file: order-service/Dockerfile-order-service
          
       
